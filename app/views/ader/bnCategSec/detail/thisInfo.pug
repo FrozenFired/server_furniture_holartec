@@ -1,0 +1,21 @@
+table.mt-3.table.table-hover
+	tr
+		td: strong 编号:
+		td #{bnCategSec.code}
+	tr
+		td: strong 意大利文名称:
+		td #{bnCategSec.nome}
+	tr
+		td: strong 英文名称:
+		td #{bnCategSec.nomeEN}
+	tr
+		td: strong 中文名称:
+		td #{bnCategSec.nomeCN}
+	tr
+		td: strong 权重:
+		td #{bnCategSec.weight}
+	if bnCategSec.bnCategFir
+		- const bnCategFir = bnCategSec.bnCategFir;
+		tr
+			td: strong 所属一级:
+			td #{bnCategFir.code}

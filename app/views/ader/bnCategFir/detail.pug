@@ -1,0 +1,17 @@
+extends ../aalayout/layout
+
+block content
+	.container.mt-3
+		nav(aria-label="breadcrumb")
+			ol.breadcrumb
+				li.breadcrumb-item: a(href="/ader") Home
+				li.breadcrumb-item: a(href="/adBnCategFirs") 品牌一级分类列表
+				li.breadcrumb-item.active(aria-current="page") 品牌一级分类信息
+		.row
+			.col-12.text-right
+				include ./detail/upInfo
+				span &nbsp;
+				include ./detail/upCode
+		include ./detail/thisInfo
+	input#extent(type="hidden", value=Stint.extent.categ)
+	script(src="/ader/platBasicEdit.js")

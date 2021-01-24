@@ -1,0 +1,33 @@
+extends ../aalayout/layout
+
+block content
+	.container.mt-3
+		nav(aria-label="breadcrumb")
+			ol.breadcrumb
+				li.breadcrumb-item: a(href="/ader") Home
+				li.breadcrumb-item.active(aria-current="page") 品牌一级分类列表
+		.row
+			.col-12.text-right
+				a.btn.btn-warning(href="/adBnCategFirAdd") +
+		.row.mt-3
+			.col-12
+				table.table.table-hover.table-bordered
+					thead
+						tr
+							th(style="width:8%") 序号
+							th(style="width:20%") 编号
+							th(style="width:20%") 名字
+							th(style="width:20%") 英文
+							th(style="width:20%") 中文
+							th(style="width:12%") 权重
+					tbody
+						- let len = 0;
+						each bnCategFir in bnCategFirs
+							- len++;
+							tr(class="bnCategFir-id-"+bnCategFir._id)
+								td #{len}
+								td: a(href="/adBnCategFir/"+bnCategFir._id) #{bnCategFir.code}
+								td #{bnCategFir.nome}
+								td #{bnCategFir.nomeEN}
+								td #{bnCategFir.nomeCN}
+								td #{bnCategFir.weight}

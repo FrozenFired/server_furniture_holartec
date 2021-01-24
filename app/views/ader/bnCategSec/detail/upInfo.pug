@@ -1,0 +1,43 @@
+a.btn.btn-warning(href="#", data-toggle="modal", data-target="#upInfo") 修改信息
+
+#upInfo.modal.fade
+	.modal-dialog
+		.modal-content
+			form#adObjectUpdInfo-Form(method="post", action="/adBnCategSecUpdInfo")
+				.modal-header: h3 修改信息
+				.modal-body
+					input(type="hidden", name="obj[_id]", value=bnCategSec._id)
+					.form-group.row
+						label.col-3.col-form-label(for="bnCategFirIpt")#bnCategFirLabel 所属一级
+						.col-9
+							select#bnCategFirIpt.form-control(name="obj[bnCategFir]", data-style="btn-info")
+								each bnCategFir in bnCategFirs
+									-a;
+									if bnCategSec.bnCategFir && String(bnCategSec.bnCategFir._id) == String(bnCategFir._id)
+										-a;
+										option(value=bnCategFir._id, selected="selected") #{bnCategFir.code}
+									else
+										option(value=bnCategFir._id) #{bnCategFir.code}
+					.form-group.row
+						label.col-3.col-form-label(for="nomeIpt") 意大利文名称
+						.col-9
+							input#nomeIpt.form-control(type="text", name="obj[nome]" value=bnCategSec.nome)
+						.offset-3.col-9.col-form-label.text-danger
+					.form-group.row
+						label.col-3.col-form-label(for="nomeENIpt") 英文名称
+						.col-9
+							input#nomeENIpt.form-control(type="text", name="obj[nomeEN]" value=bnCategSec.nomeEN)
+						.offset-3.col-9.col-form-label.text-danger
+					.form-group.row
+						label.col-3.col-form-label(for="nomeCNIpt") 中文名称
+						.col-9
+							input#nomeCNIpt.form-control(type="text", name="obj[nomeCN]" value=bnCategSec.nomeCN)
+						.offset-3.col-9.col-form-label.text-danger
+					.form-group.row
+						label.col-3.col-form-label(for="weightIpt") 权重
+						.col-9
+							input#weightIpt.form-control(type="number", name="obj[weight]" value=bnCategSec.weight)
+						.offset-3.col-9.col-form-label.text-danger
+				.modal-footer
+					button.btn.btn-default(type="button" data-dismiss="modal") 取消
+					button.btn.btn-success(type="submit") 提交

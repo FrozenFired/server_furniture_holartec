@@ -1,0 +1,18 @@
+a.btn.btn-warning(href="#", data-toggle="modal", data-target="#upCode") 更改编码
+
+#upCode.modal.fade
+	.modal-dialog
+		.modal-content
+			form#adObjectUpdCode-Form(method="post", action="/adNationUpdCode")
+				.modal-header: h3 更改编码
+				.modal-body
+					input(type="hidden", name="nationId", value=nation._id)
+					.form-group.row
+						label.col-3.col-form-label(for="codeIpt")#codeLabel.text-info 编码
+						.col-9
+							input#codeIpt.form-control(type="text", name="code" value=nation.code)
+						.offset-3.col-9#codeOpt.text-danger(style="display:none")
+							span 用户账户长度[#{Stint.extent.nation.code.min}, #{Stint.extent.nation.code.max}]的英文字母或数字
+				.modal-footer
+					button.btn.btn-default(type="button" data-dismiss="modal") 取消
+					button.btn.btn-success(type="submit") 提交

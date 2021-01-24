@@ -1,0 +1,37 @@
+a.btn.btn-warning(href="#", data-toggle="modal", data-target="#upInfo") 修改信息
+
+#upInfo.modal.fade
+	.modal-dialog
+		.modal-content
+			form#adObjectUpdInfo-Form(method="post", action="/adNationUpdInfo")
+				.modal-header: h3 修改信息
+				.modal-body
+					input(type="hidden", name="obj[_id]", value=nation._id)
+					.form-group.row
+						label.col-3.col-form-label(for="nomeIpt") 名称
+						.col-9
+							input#nomeIpt.form-control(type="text", name="obj[nome]" value=nation.nome)
+						.offset-3.col-9.col-form-label.text-danger
+					.form-group.row
+						label.col-3.col-form-label(for="nomeENIpt") 英文名称
+						.col-9
+							input#nomeENIpt.form-control(type="text", name="obj[nomeEN]" value=nation.nomeEN)
+						.offset-3.col-9.col-form-label.text-danger
+					.form-group.row
+						label.col-3.col-form-label(for="nomeCNIpt") 中文名称
+						.col-9
+							input#nomeCNIpt.form-control(type="text", name="obj[nomeCN]" value=nation.nomeCN)
+						.offset-3.col-9.col-form-label.text-danger
+					.form-group.row
+						label.col-3.col-form-label(for="telIpt") 国家邮编
+						.col-9
+							input#telIpt.form-control(type="text", name="obj[tel]" value=nation.tel)
+						.offset-3.col-9.col-form-label.text-danger
+					.form-group.row
+						label.col-3.col-form-label(for="weightIpt") 权重
+						.col-9
+							input#weightIpt.form-control(type="number", name="obj[weight]" value=nation.weight)
+						.offset-3.col-9.col-form-label.text-danger
+				.modal-footer
+					button.btn.btn-default(type="button" data-dismiss="modal") 取消
+					button.btn.btn-success(type="submit") 提交

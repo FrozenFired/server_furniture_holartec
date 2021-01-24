@@ -1,0 +1,35 @@
+extends ../aalayout/layout
+
+block content
+	.container.mt-3
+		nav(aria-label="breadcrumb")
+			ol.breadcrumb
+				li.breadcrumb-item: a(href="/ader") Home
+				li.breadcrumb-item.active(aria-current="page") 国家列表
+		.row
+			.col-12.text-right
+				a.btn.btn-warning(href="/adNationAdd") +
+		.row.mt-3
+			.col-12
+				table.table.table-hover.table-bordered
+					thead
+						tr
+							th(style="width:5%") 序号
+							th(style="width:10%") 编号
+							th(style="width:20%") 名字
+							th(style="width:20%") 英文
+							th(style="width:20%") 中文
+							th(style="width:10%") 国家号码
+							th(style="width:10%") 权重
+					tbody
+						- let len = 0;
+						each nation in nations
+							- len++;
+							tr(class="nation-id-"+nation._id)
+								td #{len}
+								td: a(href="/adNation/"+nation._id) #{nation.code}
+								td #{nation.nome}
+								td #{nation.nomeEN}
+								td #{nation.nomeCN}
+								td #{nation.tel}
+								td #{nation.weight}

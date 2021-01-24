@@ -1,0 +1,15 @@
+extends ../aalayout/layout
+
+block content
+	.container.mt-3
+		nav(aria-label="breadcrumb")
+			ol.breadcrumb
+				li.breadcrumb-item: a(href="/mger") 操作页面
+				//- li.breadcrumb-item.active(aria-current="page") 账单列表
+
+		.row
+			.col-12 管理部
+			.col-6.col-md-3.col-lg-2.text-center.mt-3
+				a.btn.btn-default(href="/users")
+					img(src="/imgs/indicate/comment.png", width="30px", height="30px")
+					.text-dark.mt-2 成员

@@ -1,0 +1,45 @@
+extends ../aalayout/layout
+
+block content
+	.container.mt-3
+		nav(aria-label="breadcrumb")
+			ol.breadcrumb
+				li.breadcrumb-item: a(href="/ader") Home
+				li.breadcrumb-item: a(href="/adBnCategSecs") 品牌二级分类列表
+				li.breadcrumb-item.active(aria-current="page") 添加品牌二级分类
+		hr
+		form#adObjectNew-Form(method="post", action="/adBnCategSecNew")
+			.form-group.row
+				label.col-4.col-sm-2.col-form-label(for="codeIpt")#codeLabel.text-info 编号
+				.col-8.col-sm-6
+					input#codeIpt.form-control(type="text", name="obj[code]")
+				.offset-4.offset-sm-2.col-8.col-sm-6#codeOpt.text-danger(style="display:none")
+					span 品牌二级分类编码长度为 [#{Stint.extent.categ.code.min}, #{Stint.extent.categ.code.max}]的英文字母或数字
+			.form-group.row
+				label.col-4.col-sm-2.col-form-label(for="bnCategFirIpt")#bnCategFirLabel 所属一级
+				.col-8.col-sm-6
+					select#bnCategFirIpt.form-control(name="obj[bnCategFir]", data-style="btn-info")
+						each bnCategFir in bnCategFirs
+							-a;
+							option(value=bnCategFir._id) #{bnCategFir.code}
+			.form-group.row
+				label.col-4.col-sm-2.col-form-label(for="nomeIpt") 意大利文名称
+				.col-8.col-sm-6
+					input#nomeIpt.form-control(type="text", name="obj[nome]")
+			.form-group.row
+				label.col-4.col-sm-2.col-form-label(for="nomeENIpt") 英文名称
+				.col-8.col-sm-6
+					input#nomeENIpt.form-control(type="text", name="obj[nomeEN]")
+			.form-group.row
+				label.col-4.col-sm-2.col-form-label(for="nomeCNIpt") 中文名称
+				.col-8.col-sm-6
+					input#nomeCNIpt.form-control(type="text", name="obj[nomeCN]")
+			.form-group.row
+				label.col-4.col-sm-2.col-form-label(for="weightIpt") 权重
+				.col-8.col-sm-6
+					input#weightIpt.form-control(type="number", name="obj[weight]", value=0)
+			.form-group.row
+				.offset-sm-6.col-sm-2
+					input.btn.btn-success.btn-block(type="submit" value="添加")
+	input#extent(type="hidden", value=Stint.extent.categ)
+	script(src="/ader/platBasicEdit.js")

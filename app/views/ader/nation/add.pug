@@ -1,0 +1,45 @@
+extends ../aalayout/layout
+
+block content
+	.container.mt-3
+		nav(aria-label="breadcrumb")
+			ol.breadcrumb
+				li.breadcrumb-item: a(href="/ader") Home
+				li.breadcrumb-item: a(href="/adNations") 国家列表
+				li.breadcrumb-item.active(aria-current="page") 添加国家
+		hr
+		form#adObjectNew-Form(method="post", action="/adNationNew")
+			.form-group.row
+				label.col-4.col-sm-2.col-form-label(for="codeIpt")#codeLabel.text-info 编码
+				.col-8.col-sm-6
+					input#codeIpt.form-control(type="text", name="obj[code]")
+				.offset-4.offset-sm-2.col-8.col-sm-6#codeOpt.text-danger(style="display:none")
+					span 国家编码长度为 [#{Stint.extent.nation.code.min}, #{Stint.extent.nation.code.max}]的英文字母或数字
+			.form-group.row
+				label.col-4.col-sm-2.col-form-label(for="nomeIpt") 本国名称
+				.col-8.col-sm-6
+					input#nomeIpt.form-control(type="text", name="obj[nome]")
+				.offset-4.col-8.col-form-label.text-danger
+			.form-group.row
+				label.col-4.col-sm-2.col-form-label(for="nomeENIpt") 英文名称
+				.col-8.col-sm-6
+					input#nomeENIpt.form-control(type="text", name="obj[nomeEN]")
+			.form-group.row
+				label.col-4.col-sm-2.col-form-label(for="nomeCNIpt") 中文名称
+				.col-8.col-sm-6
+					input#nomeCNIpt.form-control(type="text", name="obj[nomeCN]")
+			.form-group.row
+				label.col-4.col-sm-2.col-form-label(for="telIpt") 国家邮编
+				.col-8.col-sm-6
+					input#telIpt.form-control(type="text", name="obj[tel]")
+				.offset-4.col-8.col-form-label.text-danger
+			.form-group.row
+				label.col-4.col-sm-2.col-form-label(for="weightIpt") 权重
+				.col-8.col-sm-6
+					input#weightIpt.form-control(type="number", name="obj[weight]")
+				.offset-4.col-8.col-form-label.text-danger
+			.form-group.row
+				.offset-sm-6.col-sm-2
+					input.btn.btn-success.btn-block(type="submit" value="添加")
+	input#extent(type="hidden", value=Stint.extent.nation)
+	script(src="/ader/platBasicEdit.js")

@@ -1,0 +1,18 @@
+a.btn.btn-warning(href="#", data-toggle="modal", data-target="#upCode") 更改编号
+
+#upCode.modal.fade
+	.modal-dialog
+		.modal-content
+			form#adObjectUpdCode-Form(method="post", action="/adBnCategFirUpdCode")
+				.modal-header: h3 更改编号
+				.modal-body
+					input(type="hidden", name="bnCategFirId", value=bnCategFir._id)
+					.form-group.row
+						label.col-3.col-form-label(for="codeIpt")#codeLabel.text-info 编号
+						.col-9
+							input#codeIpt.form-control(type="text", name="code" value=bnCategFir.code)
+						.offset-3.col-9#codeOpt.text-danger(style="display:none")
+							span 用户账户长度[#{Stint.extent.categ.code.min}, #{Stint.extent.categ.code.max}]的英文字母或数字
+				.modal-footer
+					button.btn.btn-default(type="button" data-dismiss="modal") 取消
+					button.btn.btn-success(type="submit") 提交
