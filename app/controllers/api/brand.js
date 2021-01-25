@@ -1,6 +1,7 @@
 const Conf = require('../../../config/conf.js');
 const Brand = require('../../models/basic/brand');
 const MdFilter = require('../../middle/middleFilter');
+const MdFiles = require('../../middle/middleFiles');
 
 exports.brandFunc = async(req, res) => {
 	// console.log("/brand")
@@ -24,39 +25,31 @@ exports.brandFunc = async(req, res) => {
 		res.json({status: 400, message: error})
 	}
 }
-const brandParamFilter = (brandId, crUser) => {
-	const param = {
-		"firm": crUser.firm,
-		"_id": brandId
-	};
 
-	const filter = {'pwd': 0, 'refreshToken': 0};
-
-	if(!Conf.roleAdmins.includes(crUser.role)) {
-		param.stream = crUser.stream;
-	}
-
-	return {param, filter};
-}
 
 exports.brandNewFunc = async(req, res) => {
+	console.log("/brandNew");
 	try {
-		const obj = req.body.obj;
 		const crUser = req.user;
-		if(crUser.role >= obj.role) return res.json({status: 403, message: "您的权限不足"});
-		obj.code = await MdFilter.userCode_FilterProm(obj.code);
-		const existUser = await User.findOne({"code": obj.code, "firm": obj.firm});
-		if(existUser) return res.json({status: 400, message: '已经有此账号, 请重更换账号'});
+		const obj = req.obj;
 
-		obj.pwd = await MdFilter.userPwdBcrypt_FilterProm(obj.pwd);
+		if(obj.code) {
+			console.log(obj.code)
+			obj.code = obj.code.replace(/^\s*/g,"").toUpperCase();
+		}
+		obj.nome = obj.nome.replace(/^\s*/g,"").toUpperCase();
+		const existBrand = await Brand.findOne({"nome": obj.nome, "firm": crUser.firm});
+		if(existBrand) return res.json({status: 400, message: '已经有此账号, 请重更换账号'});
+
 		obj.firm = crUser.firm;
+		obj.weight = 100;
 
-		const _object = new User(obj)
-		const newUser = await _object.save();
+		const _object = new Brand(obj)
+		const brandSave = await _object.save();
 		res.json({status: 200, message: '创建成功'})
 	} catch(error) {
-		console.log(error)
-		res.json({status: 400, message: error})
+		console.log(error);
+		return res.json({status: 500, message: 'brandNewFunc, error[1]'});
 	}
 }
 
@@ -65,6 +58,7 @@ exports.brandsFunc = async(req, res) => {
 	try{
 		const crUser = req.user;
 		const {param, filter, sortBy, page, pagesize, skip} = brandsParamFilter(req, crUser);
+		// console.log(param)
 
 		const count = await Brand.countDocuments(param);
 		// console.log(count);
@@ -73,7 +67,7 @@ exports.brandsFunc = async(req, res) => {
 		.populate("nation", "code")
 		.populate("bnCategSec", "code")
 		.skip(skip).limit(pagesize)
-		.sort({'shelf': -1, 'weight': -1, 'updAt': -1})
+		.sort({'weight': -1, 'shelf': -1, 'updAt': -1})
 		// console.log(count)
 		return res.status(200).json({
 			status: 200,
@@ -84,6 +78,13 @@ exports.brandsFunc = async(req, res) => {
 		return res.json({status: 500, message: '系统登录错误, 请联系管理员。 错误码: get/brands[1]'})
 	}
 }
+
+
+
+
+
+
+
 
 const brandsParamFilter = (req, crUser) => {
 	let param = {
@@ -116,4 +117,45 @@ const brandsParamFilter = (req, crUser) => {
 
 	const {page, pagesize, skip} = MdFilter.page_Filter(req);
 	return {param, filter, sortBy, page, pagesize, skip};
+}
+
+
+const brandParamFilter = (brandId, crUser) => {
+	const param = {
+		"firm": crUser.firm,
+		"_id": brandId
+	};
+
+	const filter = {'pwd': 0, 'refreshToken': 0};
+
+	if(!Conf.roleAdmins.includes(crUser.role)) {
+		param.stream = crUser.stream;
+	}
+
+	return {param, filter};
+}
+
+
+
+
+
+
+
+exports.brandDelFunc = async(req, res) => {
+	try {
+
+		const crUser = req.user;
+		const brandId = req.params.brandId;
+
+		const brand = await Brand.findOne({_id: brandId, firm: crUser.firm});
+		if(!brand) return res.json({status: 500, message: 'brandDelFunc 没有找到此品牌'});
+		if(brand.logo) MdFiles.rmPicture(brand.logo);
+		// const pdfir = await Pdfir.findOne({brand: brandId});
+		// if(pdfir) return res.json({status: 500, message: '请先删除品牌下的所有产品'});
+
+		const brandDel = await Brand.deleteOne({_id: brandId});
+		return res.json({status: 200, message: '成功从服务器删除品牌'});
+	} catch(error) {
+		return res.json({status: 500, message: '系统登录错误, 请联系管理员。 错误码: get/brands[1]'})
+	}
 }

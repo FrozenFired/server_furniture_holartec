@@ -1,6 +1,7 @@
 const Conf = require('../../config/conf.js');
 const MdVerify = require('./middleVerify.js');
 
+
 const isAuth = async(req, res, next, roleFunc) => {
 	// console.log(req.cookies.accessToken)
 	const accessToken = req.headers['authorization'];

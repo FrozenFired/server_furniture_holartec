@@ -7,6 +7,7 @@ module.exports = function(app){
 	app.post('/api/userNew', MdAuth.isBser, userNewFunc);
 	app.get('/api/users', MdAuth.isUser, usersFunc);
 	app.get('/api/user/:userId', MdAuth.isBser, userFunc);
+	app.delete('/api/userDel/:userId', MdAuth.isBser, userDelFunc);
 };
 
 const userParamFilter = (userId, crUser) => {
@@ -26,6 +27,26 @@ const userParamFilter = (userId, crUser) => {
 
 	return {param, filter};
 }
+const userDelFunc = async(req, res) => {
+	try {
+		const crUser = req.user;
+		const userId = req.params.userId;
+
+		if(!Conf.roleAdmins.includes(crUser._id)) return res.json({status: 403, message: "您的权限不足"});
+		const user = await User.findOne({_id: userId, firm: crUser.firm}, {_id: 1, role: 1});
+		// console.log(user);
+		if(user.role <= crUser.role) return res.json({status: 403, message: "您的权限不足"});
+
+		const userDel = await User.deleteOne({_id: userId});
+		return res.status(200).json({
+			status: 200,
+			message: '成功删除用户',
+		});
+	} catch(error) {
+		console.log(error);
+		res.json({status: 400, message: error});
+	}
+}
 const userFunc = async(req, res) => {
 	try {
 		const crUser = req.user;
@@ -40,8 +61,8 @@ const userFunc = async(req, res) => {
 			data: {user}
 		});
 	} catch(error) {
-		console.log(error)
-		res.json({status: 400, message: error})
+		console.log(error);
+		res.json({status: 400, message: error});
 	}
 }
 const userNewFunc = async(req, res) => {
@@ -58,10 +79,10 @@ const userNewFunc = async(req, res) => {
 
 		const _object = new User(obj)
 		const newUser = await _object.save();
-		res.json({status: 200, message: '创建成功'})
+		res.json({status: 200, message: '创建成功'});
 	} catch(error) {
-		console.log(error)
-		res.json({status: 400, message: error})
+		console.log(error);
+		res.json({status: 400, message: error});
 	}
 }
 
@@ -138,7 +159,7 @@ const usersFunc = async(req, res) => {
 			data: {users, count, page, isMore}
 		});
 	} catch(error) {
-		console.log(error)
-		res.json({status: 400, message: error})
+		console.log(error);
+		res.json({status: 400, message: error});
 	}
 }

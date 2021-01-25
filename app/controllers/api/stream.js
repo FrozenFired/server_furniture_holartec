@@ -42,7 +42,6 @@ exports.streamNewFunc = async(req, res) => {
 	try {
 		const obj = req.body.obj;
 		const crUser = req.user;
-		if(crUser.role >= obj.role) return res.json({status: 403, message: "您的权限不足"});
 		obj.code = await MdFilter.userCode_FilterProm(obj.code);
 		const existUser = await User.findOne({"code": obj.code, "firm": obj.firm});
 		if(existUser) return res.json({status: 400, message: '已经有此账号, 请重更换账号'});
